@@ -5,26 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <script>
-        // Redirect logic
         document.addEventListener("DOMContentLoaded", function () {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-            // Check if the user is on an Android device
-            if (/android/i.test(userAgent)) {
+            // Check for iOS (iPhone, iPad, or iPod)
+            const isIOS = /iPad|iPhone|iPod/.test(userAgent) || 
+                          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+            // Check for Android
+            const isAndroid = /android/i.test(userAgent);
+
+            if (isAndroid) {
                 // Redirect to Google Play Store
                 window.location.href = "https://play.google.com/store/apps/details?id=com.example.app";
-            } 
-            // Check if the user is on an iOS device
-            else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            } else if (isIOS) {
                 // Redirect to Apple App Store
                 window.location.href = "https://apps.apple.com/app/example-app/id1234567890";
-            } 
-            // Fallback for other devices or unsupported systems
-            else {
+            } else {
+                // Fallback for unsupported devices
                 document.body.innerHTML = `
                     <h1>Unsupported Device</h1>
-                    <p>Please visit our app stores on your mobile device.</p>
-                    <p><a href="https://example.com">Visit Website</a></p>
+                    <p>Please visit our app stores on your mobile device:</p>
+                    <ul>
+                        <li><a href="https://play.google.com/store/apps/details?id=com.example.app">Google Play Store</a></li>
+                        <li><a href="https://apps.apple.com/app/example-app/id1234567890">Apple App Store</a></li>
+                    </ul>
                 `;
             }
         });
